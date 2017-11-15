@@ -26,8 +26,6 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
     private final int canvasHeight;
     private final Color backgroundColor;
 
-    private double x;
-    private double y;
 
     private final int framesPerSecond = 25;
     private final int msPerFrame = 1000 / framesPerSecond;
@@ -35,8 +33,9 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
     private int frame = 0;
 
     private Player steveBuscemi;
-    private Aliens degenerates;
+    //private Aliens degenerates;
     private ArrayList<Aliens> aliensList;
+    private Aliens Bill;
     //private ArrayList<enemyFire> enemyFireList;
    // private ArrayList<playerFire> playerFireList;
 
@@ -57,23 +56,28 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
         // FIXME initialize your game objects
         this.steveBuscemi = new Player(200, 300, 40, 40);
-        this.degenerates = new Aliens(400, 100, 40, 40);
+        //this.degenerates = new Aliens(400, 100, 40, 40);
         //this.aliensList = new ArrayList<Aliens>();
 
-        for (int column = 0; column < 5; column ++) {
+        aliensList = new ArrayList<Aliens>();
+
+        int displacement = 70;
+        for (int column = 0; column < 5; column++) {
             for (int row = 0; row < 3; row++) {
+                this.aliensList.add(new Aliens(100 + (column*displacement), 10 + (row*displacement), 30, 30));
 
-                aliensList.add(new Aliens(this.x, this.y, 30, 30));
+            }
+        }
 
-
-                g.setColor(Color.green);
-                g.fillRect(this.xx + (displacement * column), this.yy + (displacement * row), size, size);
 
                 //this.enemyFireList = new ArrayList<enemyFire>();
                 //this.playerFireList = new ArrayList<playerFire>();
 
-            }
-        }
+
+    }
+
+    public void update(int frame) {
+    }
 
     /* Start the game
      */
@@ -209,7 +213,11 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      */
     private void paintGameScreen(Graphics g) {
         this.steveBuscemi.draw(g);
-        this.degenerates.draw(g);
+        //this.degenerates.draw(g);
+
+        for (int i = 0; i < aliensList.size(); i++){
+            this.aliensList.get(i).draw(g);
+        }
         // FIXME draw game objects here
     }
 
