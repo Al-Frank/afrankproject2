@@ -5,20 +5,12 @@ import java.awt.Image;
 
 public class Player extends GraphicsObject {
 
-    double x;
-    double y;
-    int xx;
-    int yy;
-    double speed_x;
-    double speed_y;
     int width;
     int height;
     Color color;
 
     public Player(double x, double y, int width, int height){
         super(x, y);
-        xx = (int) x;
-        yy = (int) y;
         this.width = width;
         this.height= height;
         this.color = new Color(225, 100, 255);
@@ -29,7 +21,7 @@ public class Player extends GraphicsObject {
     }
     public void draw (Graphics g){
         g.setColor(this.color);
-        g.fillRect(270, 350, this.width, this.height);
+        g.fillRect((int) this.x, (int) this.y, this.width, this.height);
     }
 
     public void update(int pic_width, int pic_height, int frame) {

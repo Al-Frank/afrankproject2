@@ -26,6 +26,9 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
     private final int canvasHeight;
     private final Color backgroundColor;
 
+    private double x;
+    private double y;
+
     private final int framesPerSecond = 25;
     private final int msPerFrame = 1000 / framesPerSecond;
     private Timer timer;
@@ -33,9 +36,9 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
     private Player steveBuscemi;
     private Aliens degenerates;
-    //private ArrayList<Aliens> aliensList;
-    private ArrayList<enemyFire> enemyFireList;
-    private ArrayList<playerFire> playerFireList;
+    private ArrayList<Aliens> aliensList;
+    //private ArrayList<enemyFire> enemyFireList;
+   // private ArrayList<playerFire> playerFireList;
 
 
     // FIXME list your game objects here
@@ -53,13 +56,24 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
         this.timer = new Timer(msPerFrame, this);
 
         // FIXME initialize your game objects
-        this.steveBuscemi = new Player(200, 400, 40, 40);
+        this.steveBuscemi = new Player(200, 300, 40, 40);
         this.degenerates = new Aliens(400, 100, 40, 40);
         //this.aliensList = new ArrayList<Aliens>();
-        this.enemyFireList = new ArrayList<enemyFire>();
-        this.playerFireList = new ArrayList<playerFire>();
 
-    }
+        for (int column = 0; column < 5; column ++) {
+            for (int row = 0; row < 3; row++) {
+
+                aliensList.add(new Aliens(this.x, this.y, 30, 30));
+
+
+                g.setColor(Color.green);
+                g.fillRect(this.xx + (displacement * column), this.yy + (displacement * row), size, size);
+
+                //this.enemyFireList = new ArrayList<enemyFire>();
+                //this.playerFireList = new ArrayList<playerFire>();
+
+            }
+        }
 
     /* Start the game
      */
@@ -156,9 +170,10 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      */
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-           this.steveBuscemi.speed_x = -5;
+           steveBuscemi.x -= 10;
             // FIXME what happens when left arrow is pressed
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            steveBuscemi.x += 10;
             // FIXME what happens when right arrow is pressed
         } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             // FIXME what happens when space bar is pressed
@@ -168,6 +183,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
     /* Update the game objects
      */
     private void update() {
+
         // FIXME update game objects here
     }
 
