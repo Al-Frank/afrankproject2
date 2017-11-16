@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+
 public class SpaceInvaders extends JPanel implements ActionListener, KeyListener, Runnable {
 
     private final int canvasWidth;
@@ -34,18 +35,16 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
     private Player steveBuscemi;
     private ArrayList<Aliens> aliensList;
-    private Aliens Bill;
 
     private ArrayList<enemyFire> enemyFireList;
     private ArrayList<playerFire> playerFireList;
-
-
-    // FIXME list your game objects here
 
     /* Constructor for a Space Invaders game
      */
     public SpaceInvaders() {
         // fix the window size and background color
+
+
         this.canvasWidth = 600;
         this.canvasHeight = 400;
         this.backgroundColor = Color.BLACK;
@@ -55,8 +54,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
         // set the drawing timer
         this.timer = new Timer(msPerFrame, this);
 
-        // FIXME initialize your game objects
-        this.steveBuscemi = new Player(200, 300, 40, 40);
+        this.steveBuscemi = new Player(200, 350, 30, 30);
 
 
         aliensList = new ArrayList<Aliens>();
@@ -71,7 +69,6 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
         }
         this.enemyFireList = new ArrayList<enemyFire>();
         this.playerFireList = new ArrayList<playerFire>();
-
 
     }
 
@@ -171,17 +168,23 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      * @param e  An object describing what key was typed
      */
     public void keyPressed(KeyEvent e) {
+
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            //add projectiles to the list
+            if (playerFireList.size() < 15) {
+                playerFireList.add(new playerFire(steveBuscemi.x + 15, steveBuscemi.y, 10, 15, Color.CYAN));
+
+            }
+        }
+
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-           this.steveBuscemi.x -= 10;
-            // FIXME what happens when left arrow is pressed
+            this.steveBuscemi.x -= 10;
+
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             this.steveBuscemi.x += 10;
-            // FIXME what happens when right arrow is pressed
-        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            //add projectiles to the list
-            playerFireList.add(new playerFire(steveBuscemi.x + 15, steveBuscemi.y, 10, 15, Color.CYAN));
-            // FIXME what happens when space bar is pressed
+
         }
+
     }
 
     /* Update the game objects
@@ -190,9 +193,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
         if (hasLostGame() || hasWonGame()){
             return;
-
         }
-
 
         this.steveBuscemi.update(canvasWidth, canvasHeight, this.frame);
 
@@ -205,9 +206,14 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
                         aliensList.remove(this.aliensList.get(m));
                         this.playerFireList.get(l).xx = 10000;
-
                     }
                 }
+            }
+        }
+
+        for (int r = 0; r < playerFireList.size(); r++){
+            if (playerFireList.get(r).yy - playerFireList.get(r).height < 1){
+                playerFireList.remove(playerFireList.get(r));
             }
         }
 
@@ -236,7 +242,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
         }
 
 
-        // FIXME update game objects here
+
     }
 
     /* Check if the player has lost the game
@@ -249,6 +255,24 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
                     && enemyFireList.get(f).yy <= this.steveBuscemi.y + this.steveBuscemi.height){
                 if (enemyFireList.get(f).xx >= this.steveBuscemi.x - enemyFireList.get(f).width
                         && enemyFireList.get(f).xx <= this.steveBuscemi.x + this.steveBuscemi.width){
+                    return true;
+
+                }
+            }
+
+
+        }
+        for (int f = 0; f< aliensList.size(); f++){
+            if (aliensList.get(f).y + aliensList.get(f).size >= this.canvasHeight){
+                return true;
+            }
+        }
+
+        for (int f = 0; f < aliensList.size(); f++){
+            if (aliensList.get(f).y + aliensList.get(f).size >= this.steveBuscemi.y
+                    && aliensList.get(f).y <= this.steveBuscemi.y + this.steveBuscemi.height){
+                if (aliensList.get(f).x >= this.steveBuscemi.x - aliensList.get(f).size
+                        && aliensList.get(f).x <= this.steveBuscemi.x + this.steveBuscemi.width){
                     return true;
 
                 }
@@ -275,6 +299,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      * @param g The Graphics for the JPanel
      */
     private void paintGameScreen(Graphics g) {
+
         this.steveBuscemi.draw(g);
 
         for (int i = 0; i < aliensList.size(); i++){
@@ -287,8 +312,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
         for (int t = 0; t < enemyFireList.size(); t++){
             this.enemyFireList.get(t).draw(g);
         }
-        // FIXME draw game objects here
-        //for projectiles in list, draw each projectile
+
     }
 
     /* Paint the screen when the player has won
@@ -296,7 +320,12 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      * @param g The Graphics for the JPanel
      */
     private void paintWinScreen(Graphics g) {
-        // FIXME draw the win screen here
+        if (hasWonGame()){
+            g.setColor(Color.cyan);
+            g.fillRect(0,0,canvasWidth, canvasHeight);
+            // FIXME draw the win screen here
+        }
+
     }
 
     /* Paint the screen when the player has lost
@@ -305,10 +334,13 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      */
     private void paintLoseScreen(Graphics g) {
         if (hasLostGame()){
+            g.setColor(Color.PINK);
+            g.fillRect(0,0,canvasWidth,canvasHeight);
 
+            // FIXME draw the game over screen here
 
         }
-        // FIXME draw the game over screen here
+
     }
 
     public static void main(String[] args) {
