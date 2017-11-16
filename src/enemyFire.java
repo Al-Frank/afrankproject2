@@ -8,14 +8,16 @@ public class enemyFire extends GraphicsObject {
     Color e_fire_color;
     int xx;
     int yy;
+    int speed_y;
 
-    public enemyFire(double x, double y, int width, int height, Color e_fire_color) {
+    public enemyFire(double x, double y) {
         super(x, y);
         this.xx = (int) x;
         this.yy = (int) y;
-        this.width = width;
-        this.height = height;
-        this.e_fire_color = e_fire_color;
+        this.width = 10;
+        this.height = 10;
+        this.e_fire_color = new Color(250, 0, 50);
+        this.speed_y = 3;
     }
 
     public void draw(Graphics g) {
@@ -23,12 +25,11 @@ public class enemyFire extends GraphicsObject {
         g.setColor(this.e_fire_color);
         g.fillRect(xx, yy, this.width, this.height);
     }
-
-    //Makes ammo bounce off of walls
     public void update(int pic_width, int pic_height, int frame) {
-        if (this.x - this.width - this.height < 0 || this.x + this.height > pic_width) {
-            this.speed_x = -this.speed_x;
-        }
+
+        this.yy += this.speed_y;
+
         super.update(pic_width, pic_height, frame);
     }
-}
+    }
+

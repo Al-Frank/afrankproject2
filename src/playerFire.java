@@ -35,7 +35,7 @@ public class playerFire extends GraphicsObject {
         //if (this.x - this.width - this.height < 0 || this.x + this.height > pic_width) {
             //this.speed_x = -this.speed_x;
         //}
-        this.x += this.speed_x;
+
         this.yy -= this.speed_y;
 
         super.update(pic_width, pic_height, frame);

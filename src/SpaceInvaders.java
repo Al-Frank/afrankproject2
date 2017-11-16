@@ -36,7 +36,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
     private ArrayList<Aliens> aliensList;
     private Aliens Bill;
 
-    //private ArrayList<enemyFire> enemyFireList;
+    private ArrayList<enemyFire> enemyFireList;
     private ArrayList<playerFire> playerFireList;
 
 
@@ -57,8 +57,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
         // FIXME initialize your game objects
         this.steveBuscemi = new Player(200, 300, 40, 40);
-        //this.degenerates = new Aliens(400, 100, 40, 40);
-        //this.aliensList = new ArrayList<Aliens>();
+
 
         aliensList = new ArrayList<Aliens>();
         playerFireList = new ArrayList<playerFire>();
@@ -70,8 +69,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
             }
         }
-
-                //this.enemyFireList = new ArrayList<enemyFire>();
+        this.enemyFireList = new ArrayList<enemyFire>();
         this.playerFireList = new ArrayList<playerFire>();
 
 
@@ -206,6 +204,18 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
             }
         }
 
+        //generate random nums for which alien shoots and when it shoots
+        Random alienNum = new Random();
+        Random shootTime = new Random();
+
+        if (frame % ( 13 + shootTime.nextInt(27)) == 0){
+            int alienSpec = alienNum.nextInt(aliensList.size());
+
+            this.enemyFireList.add(new enemyFire(aliensList.get(alienSpec).x + 15, aliensList.get(alienSpec).y + aliensList.get(alienSpec).size));
+        }
+        for (int h = 0; h < enemyFireList.size(); h++){
+            this.enemyFireList.get(h).update(canvasWidth, canvasHeight, this.frame);
+        }
 
         for (int i = 0; i < aliensList.size(); i++){
             this.aliensList.get(i).update(canvasWidth, canvasHeight, this.frame);
@@ -213,6 +223,9 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
         for (int n = 0; n < playerFireList.size(); n++){
             this.playerFireList.get(n).update(canvasWidth, canvasHeight, this.frame);
+        }
+        for (int t = 0; t < enemyFireList.size(); t++){
+            this.enemyFireList.get(t).update(canvasWidth, canvasHeight, this.frame);
         }
 
 
@@ -224,7 +237,19 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      * @returns  true if the player has lost, false otherwise
      */
     private boolean hasLostGame() {
-        return false; // FIXME delete this when ready
+        for (int f = 0; f < enemyFireList.size(); f++){
+            if (enemyFireList.get(f).yy + enemyFireList.get(f).height >= this.steveBuscemi.y
+                    && enemyFireList.get(f).yy <= this.steveBuscemi.y + this.steveBuscemi.height){
+                if (enemyFireList.get(f).xx >= this.steveBuscemi.x - enemyFireList.get(f).width
+                        && enemyFireList.get(f).xx <= this.steveBuscemi.x + this.steveBuscemi.width){
+                    return true;
+
+                }
+            }
+
+
+        }
+        return false;
     }
 
     /* Check if the player has won the game
@@ -241,13 +266,16 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      */
     private void paintGameScreen(Graphics g) {
         this.steveBuscemi.draw(g);
-        //this.degenerates.draw(g);
 
         for (int i = 0; i < aliensList.size(); i++){
             this.aliensList.get(i).draw(g);
         }
         for (int n = 0; n < playerFireList.size(); n++){
             this.playerFireList.get(n).draw(g);
+        }
+
+        for (int t = 0; t < enemyFireList.size(); t++){
+            this.enemyFireList.get(t).draw(g);
         }
         // FIXME draw game objects here
         //for projectiles in list, draw each projectile
@@ -266,6 +294,9 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      * @param g The Graphics for the JPanel
      */
     private void paintLoseScreen(Graphics g) {
+        if (hasLostGame()){
+
+        }
         // FIXME draw the game over screen here
     }
 
