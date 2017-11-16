@@ -10,7 +10,7 @@ public class Aliens extends GraphicsObject {
     public Aliens(double x, double y){
         super(x, y);
         this.color = Color.GREEN;
-        this.speed_x = 3;
+        this.speed_x = 2.5;
         this.speed_y = 0;
         this.size = 30;
     }

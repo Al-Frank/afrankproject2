@@ -188,6 +188,12 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      */
     private void update() {
 
+        if (hasLostGame() || hasWonGame()){
+            return;
+
+        }
+
+
         this.steveBuscemi.update(canvasWidth, canvasHeight, this.frame);
 
         for (int l = 0; l < playerFireList.size(); l++){
@@ -198,6 +204,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
                             && this.playerFireList.get(l).xx <= this.aliensList.get(m).x + this.aliensList.get(m).size + this.playerFireList.get(l).width){
 
                         aliensList.remove(this.aliensList.get(m));
+                        this.playerFireList.get(l).xx = 10000;
 
                     }
                 }
@@ -208,7 +215,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
         Random alienNum = new Random();
         Random shootTime = new Random();
 
-        if (frame % ( 13 + shootTime.nextInt(27)) == 0){
+        if (frame % ( 20 + shootTime.nextInt(27)) == 0){
             int alienSpec = alienNum.nextInt(aliensList.size());
 
             this.enemyFireList.add(new enemyFire(aliensList.get(alienSpec).x + 15, aliensList.get(alienSpec).y + aliensList.get(alienSpec).size));
@@ -257,6 +264,9 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      * @returns  true if the player has won, false otherwise
      */
     private boolean hasWonGame() {
+        if (frame > 5 && aliensList.size() < 1){
+            return true;
+        }
         return false; // FIXME delete this when ready
     }
 
@@ -295,6 +305,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      */
     private void paintLoseScreen(Graphics g) {
         if (hasLostGame()){
+
 
         }
         // FIXME draw the game over screen here
