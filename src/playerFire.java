@@ -17,7 +17,7 @@ public class playerFire extends GraphicsObject {
         this.width = width;
         this.height = height;
         this.p_fire_color = p_fire_color;
-        this.speed_y = 5;
+        this.speed_y = 7;
 
     }
 

@@ -25,8 +25,9 @@ public class Player extends GraphicsObject {
     }
 
     public void update(int pic_width, int pic_height, int frame) {
+        if (this.x < pic_width - this.width && this.x > 0) {
+            this.x += this.speed_x;
 
-        this.x += this.speed_x;
-        this.y += this.speed_y;
+        }
     }
 }

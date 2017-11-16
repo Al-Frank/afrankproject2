@@ -39,11 +39,13 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
     private ArrayList<enemyFire> enemyFireList;
     private ArrayList<playerFire> playerFireList;
 
+    //HashMap<KeyEvent, Boolean> keyMap;
+
     /* Constructor for a Space Invaders game
      */
     public SpaceInvaders() {
         // fix the window size and background color
-
+        //keyMap = new HashMap<KeyEvent, Boolean>();
 
         this.canvasWidth = 600;
         this.canvasHeight = 400;
@@ -149,6 +151,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      */
     public void keyReleased(KeyEvent e) {
         // you can leave this function empty
+      //  keyMap.put(e, false);
     }
 
     /* Respond to key type events
@@ -159,6 +162,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      */
     public void keyTyped(KeyEvent e) {
         // you can leave this function empty
+
     }
 
     /* Respond to key press events
@@ -171,6 +175,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             //add projectiles to the list
+
             if (playerFireList.size() < 15) {
                 playerFireList.add(new playerFire(steveBuscemi.x + 15, steveBuscemi.y, 10, 15, Color.CYAN));
 
@@ -178,72 +183,102 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
         }
 
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            this.steveBuscemi.x -= 10;
+            if (this.steveBuscemi.x > 9) {
+                this.steveBuscemi.x -= 10;
+            }
 
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            this.steveBuscemi.x += 10;
-
+            if (this.steveBuscemi.x + this.steveBuscemi.width < 591) {
+                this.steveBuscemi.x += 10;
+            }
         }
 
+       // keyMap.put(e, true);
+
+
+    }
+
+    /*public boolean isKeyPressed(KeyEvent e){
+        if (keyMap.containsKey(e)){
+            return keyMap.get(e);
+        }
+        else{
+            keyMap.put(e, false);
+            return false;
+        }
     }
 
     /* Update the game objects
      */
-    private void update() {
 
-        if (hasLostGame() || hasWonGame()){
+    private void update() {
+     /*
+
+        if (isKeyPressed(KeyEvent.VK_LEFT)){
+            System.out.println("left is pressed");
+        }
+        */
+
+        if (hasLostGame() || hasWonGame()) {
             return;
         }
 
-        this.steveBuscemi.update(canvasWidth, canvasHeight, this.frame);
+            this.steveBuscemi.update(canvasWidth, canvasHeight, this.frame);
 
-        for (int l = 0; l < playerFireList.size(); l++){
-            for (int m = 0; m < aliensList.size(); m++){
-                if (this.playerFireList.get(l).yy >= this.aliensList.get(m).y
-                        && this.playerFireList.get(l).yy <= this.aliensList.get(m).y + this.aliensList.get(m).size){
-                    if (this.playerFireList.get(l).xx >= this.aliensList.get(m).x - this.playerFireList.get(l).width
-                            && this.playerFireList.get(l).xx <= this.aliensList.get(m).x + this.aliensList.get(m).size + this.playerFireList.get(l).width){
+            for (int l = 0; l < playerFireList.size(); l++) {
+                for (int m = 0; m < aliensList.size(); m++) {
 
-                        aliensList.remove(this.aliensList.get(m));
-                        this.playerFireList.get(l).xx = 10000;
+
+                    if (this.playerFireList.get(l).yy >= this.aliensList.get(m).y
+                            && this.playerFireList.get(l).yy <= this.aliensList.get(m).y + this.aliensList.get(m).size) {
+                        if (this.playerFireList.get(l).xx >= this.aliensList.get(m).x - this.playerFireList.get(l).width
+                                && this.playerFireList.get(l).xx <= this.aliensList.get(m).x + this.aliensList.get(m).size + this.playerFireList.get(l).width) {
+
+                            aliensList.remove(this.aliensList.get(m));
+                            this.playerFireList.get(l).xx = 10000;
+                        }
                     }
                 }
             }
-        }
+            //remove player projectiles when they go offscreen
+            for (int r = 0; r < playerFireList.size(); r++) {
 
-        for (int r = 0; r < playerFireList.size(); r++){
-            if (playerFireList.get(r).yy - playerFireList.get(r).height < 1){
-                playerFireList.remove(playerFireList.get(r));
+                if (playerFireList.get(r).yy - playerFireList.get(r).height < 1) {
+                    playerFireList.remove(playerFireList.get(r));
+                }
             }
+
+            //generate random nums for which alien shoots and when it shoots
+            Random alienNum = new Random();
+            Random shootTime = new Random();
+
+            if (frame % (20 + shootTime.nextInt(27)) == 0) {
+                int alienSpec = alienNum.nextInt(aliensList.size());
+
+                this.enemyFireList.add(new enemyFire(aliensList.get(alienSpec).x + 15, aliensList.get(alienSpec).y + aliensList.get(alienSpec).size));
+            }
+            for (int h = 0; h < enemyFireList.size(); h++) {
+
+                this.enemyFireList.get(h).update(canvasWidth, canvasHeight, this.frame);
+            }
+
+            for (int i = 0; i < aliensList.size(); i++) {
+
+                this.aliensList.get(i).update(canvasWidth, canvasHeight, this.frame);
+            }
+
+            for (int n = 0; n < playerFireList.size(); n++) {
+
+                this.playerFireList.get(n).update(canvasWidth, canvasHeight, this.frame);
+            }
+            for (int t = 0; t < enemyFireList.size(); t++) {
+
+                this.enemyFireList.get(t).update(canvasWidth, canvasHeight, this.frame);
+            }
+
+
         }
 
-        //generate random nums for which alien shoots and when it shoots
-        Random alienNum = new Random();
-        Random shootTime = new Random();
-
-        if (frame % ( 20 + shootTime.nextInt(27)) == 0){
-            int alienSpec = alienNum.nextInt(aliensList.size());
-
-            this.enemyFireList.add(new enemyFire(aliensList.get(alienSpec).x + 15, aliensList.get(alienSpec).y + aliensList.get(alienSpec).size));
-        }
-        for (int h = 0; h < enemyFireList.size(); h++){
-            this.enemyFireList.get(h).update(canvasWidth, canvasHeight, this.frame);
-        }
-
-        for (int i = 0; i < aliensList.size(); i++){
-            this.aliensList.get(i).update(canvasWidth, canvasHeight, this.frame);
-        }
-
-        for (int n = 0; n < playerFireList.size(); n++){
-            this.playerFireList.get(n).update(canvasWidth, canvasHeight, this.frame);
-        }
-        for (int t = 0; t < enemyFireList.size(); t++){
-            this.enemyFireList.get(t).update(canvasWidth, canvasHeight, this.frame);
-        }
-
-
-
-    }
 
     /* Check if the player has lost the game
      *
@@ -288,10 +323,11 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      * @returns  true if the player has won, false otherwise
      */
     private boolean hasWonGame() {
-        if (frame > 5 && aliensList.size() < 1){
+        //if the game has started and there's no more aliens. I don't care if you win in less than 2 frames, that's fake.
+        if (frame > 2 && aliensList.size() < 1){
             return true;
         }
-        return false; // FIXME delete this when ready
+        return false;
     }
 
     /* Paint the screen during normal gameplay
@@ -321,6 +357,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      */
     private void paintWinScreen(Graphics g) {
         if (hasWonGame()){
+            timer.stop();
             g.setColor(Color.cyan);
             g.fillRect(0,0,canvasWidth, canvasHeight);
             // FIXME draw the win screen here
@@ -334,6 +371,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      */
     private void paintLoseScreen(Graphics g) {
         if (hasLostGame()){
+            timer.stop();
             g.setColor(Color.PINK);
             g.fillRect(0,0,canvasWidth,canvasHeight);
 
