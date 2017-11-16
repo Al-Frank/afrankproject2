@@ -36,8 +36,9 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
     //private Aliens degenerates;
     private ArrayList<Aliens> aliensList;
     private Aliens Bill;
+
     //private ArrayList<enemyFire> enemyFireList;
-   // private ArrayList<playerFire> playerFireList;
+    private ArrayList<playerFire> playerFireList;
 
 
     // FIXME list your game objects here
@@ -61,6 +62,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
         //this.aliensList = new ArrayList<Aliens>();
 
         aliensList = new ArrayList<Aliens>();
+        playerFireList = new ArrayList<playerFire>();
 
         int displacement = 60;
         for (int column = 0; column < 5; column++) {
@@ -72,7 +74,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
 
                 //this.enemyFireList = new ArrayList<enemyFire>();
-                //this.playerFireList = new ArrayList<playerFire>();
+        this.playerFireList = new ArrayList<playerFire>();
 
 
     }
@@ -180,6 +182,8 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
             this.steveBuscemi.x += 10;
             // FIXME what happens when right arrow is pressed
         } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            //add projectiles to the list
+            playerFireList.add(new playerFire(steveBuscemi.x + 15, steveBuscemi.y, 10, 15, Color.CYAN));
             // FIXME what happens when space bar is pressed
         }
     }
@@ -231,6 +235,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
             this.aliensList.get(i).draw(g);
         }
         // FIXME draw game objects here
+        //for projectiles in list, draw each projectile
     }
 
     /* Paint the screen when the player has won
