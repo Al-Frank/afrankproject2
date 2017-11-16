@@ -48,7 +48,8 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
         // fix the window size and background color
         this.canvasWidth = 600;
         this.canvasHeight = 400;
-        this.backgroundColor = Color.WHITE;
+        this.backgroundColor = Color.BLACK;
+
         setPreferredSize(new Dimension(this.canvasWidth, this.canvasHeight));
 
         // set the drawing timer
@@ -61,10 +62,10 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
         aliensList = new ArrayList<Aliens>();
 
-        int displacement = 70;
+        int displacement = 60;
         for (int column = 0; column < 5; column++) {
             for (int row = 0; row < 3; row++) {
-                this.aliensList.add(new Aliens(100 + (column*displacement), 10 + (row*displacement), 30, 30));
+                this.aliensList.add(new Aliens(100 + (column*displacement), 10 + (row*displacement)));
 
             }
         }
@@ -76,8 +77,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
     }
 
-    public void update(int frame) {
-    }
+
 
     /* Start the game
      */
@@ -174,10 +174,10 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      */
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-           steveBuscemi.x -= 10;
+           this.steveBuscemi.x -= 10;
             // FIXME what happens when left arrow is pressed
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            steveBuscemi.x += 10;
+            this.steveBuscemi.x += 10;
             // FIXME what happens when right arrow is pressed
         } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             // FIXME what happens when space bar is pressed
@@ -187,6 +187,18 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
     /* Update the game objects
      */
     private void update() {
+
+        this.steveBuscemi.update(canvasWidth, canvasHeight, this.frame);
+
+        for (int i = 0; i < aliensList.size(); i++){
+            this.aliensList.get(i).update(canvasWidth, canvasHeight, this.frame);
+        }
+
+        //????????
+
+        //repaint(0, 0, this.canvasWidth, this.canvasHeight);
+        // increment the frame counter
+        //this.frame++;
 
         // FIXME update game objects here
     }
