@@ -33,7 +33,6 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
     private int frame = 0;
 
     private Player steveBuscemi;
-    //private Aliens degenerates;
     private ArrayList<Aliens> aliensList;
     private Aliens Bill;
 
@@ -71,7 +70,6 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
             }
         }
-
 
                 //this.enemyFireList = new ArrayList<enemyFire>();
         this.playerFireList = new ArrayList<playerFire>();
@@ -194,15 +192,29 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
         this.steveBuscemi.update(canvasWidth, canvasHeight, this.frame);
 
+        for (int l = 0; l < playerFireList.size(); l++){
+            for (int m = 0; m < aliensList.size(); m++){
+                if (this.playerFireList.get(l).yy >= this.aliensList.get(m).y
+                        && this.playerFireList.get(l).yy <= this.aliensList.get(m).y + this.aliensList.get(m).size){
+                    if (this.playerFireList.get(l).xx >= this.aliensList.get(m).x - this.playerFireList.get(l).width
+                            && this.playerFireList.get(l).xx <= this.aliensList.get(m).x + this.aliensList.get(m).size + this.playerFireList.get(l).width){
+
+                        aliensList.remove(this.aliensList.get(m));
+
+                    }
+                }
+            }
+        }
+
+
         for (int i = 0; i < aliensList.size(); i++){
             this.aliensList.get(i).update(canvasWidth, canvasHeight, this.frame);
         }
 
-        //????????
+        for (int n = 0; n < playerFireList.size(); n++){
+            this.playerFireList.get(n).update(canvasWidth, canvasHeight, this.frame);
+        }
 
-        //repaint(0, 0, this.canvasWidth, this.canvasHeight);
-        // increment the frame counter
-        //this.frame++;
 
         // FIXME update game objects here
     }
@@ -233,6 +245,9 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
         for (int i = 0; i < aliensList.size(); i++){
             this.aliensList.get(i).draw(g);
+        }
+        for (int n = 0; n < playerFireList.size(); n++){
+            this.playerFireList.get(n).draw(g);
         }
         // FIXME draw game objects here
         //for projectiles in list, draw each projectile

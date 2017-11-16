@@ -17,6 +17,7 @@ public class playerFire extends GraphicsObject {
         this.width = width;
         this.height = height;
         this.p_fire_color = p_fire_color;
+        this.speed_y = 5;
 
     }
 
@@ -31,10 +32,14 @@ public class playerFire extends GraphicsObject {
 
     //Makes ammo bounce off of walls
     public void update(int pic_width, int pic_height, int frame) {
-        if (this.x - this.width - this.height < 0 || this.x + this.height > pic_width) {
-            this.speed_x = -this.speed_x;
-        }
+        //if (this.x - this.width - this.height < 0 || this.x + this.height > pic_width) {
+            //this.speed_x = -this.speed_x;
+        //}
+        this.x += this.speed_x;
+        this.yy -= this.speed_y;
+
         super.update(pic_width, pic_height, frame);
+
     }
 }
 

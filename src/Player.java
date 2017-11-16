@@ -26,11 +26,6 @@ public class Player extends GraphicsObject {
 
     public void update(int pic_width, int pic_height, int frame) {
 
-        //if ((this.x + this.width) == 600 || this.x == 0){
-            //this.speed_x = -speed_x;
-            //this.y += 5;
-        //}
-
         this.x += this.speed_x;
         this.y += this.speed_y;
     }
