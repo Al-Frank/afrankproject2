@@ -275,7 +275,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
             Random alienNum = new Random();
             Random shootTime = new Random();
             //make aliens fire at random
-            if (frame % (20 + shootTime.nextInt(27)) == 0) {
+            if (frame % (10 + shootTime.nextInt(30)) == 0) {
                 int alienSpec = alienNum.nextInt(aliensList.size());
 
                 this.enemyFireList.add(new enemyFire(aliensList.get(alienSpec).x + 15, aliensList.get(alienSpec).y + aliensList.get(alienSpec).size));
@@ -475,6 +475,13 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
             //L
             g.fillRect(440, 225, 25, 150);
             g.fillRect(465, 350, 85, 25);
+            g.setColor(new Color(250, 100, 150));
+            //int x_value = 0;
+            //int y_value = 0;
+            //for (int i = 0; i < 100; i++) {
+                g.drawString("You disappoint me greatly", 400, 200);
+
+           //}
 
             // FIXME draw the game over screen here
 
