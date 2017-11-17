@@ -24,10 +24,10 @@ public class playerFire extends GraphicsObject {
     public void draw(Graphics g) {
 
         g.setColor(this.p_fire_color);
-        g.fillOval(xx, yy, this.width, this.height / 4);
-        g.fillOval(xx, yy + (height / 4), width, height / 4);
-        g.fillOval(xx, yy + (2 * (height / 4)), width, height / 4);
-        g.fillOval(xx, yy + (3 * (height / 4)), width, height / 4);
+        g.fillOval(xx, yy, this.width, this.height / 5);
+        g.fillOval(xx, yy + (height / 4), width, height / 5);
+        g.fillOval(xx, yy + (2 * (height / 4)), width, height / 5);
+        g.fillOval(xx, yy + (3 * (height / 4)), width, height / 5);
     }
 
     //Makes ammo bounce off of walls

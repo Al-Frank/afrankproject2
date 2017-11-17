@@ -14,10 +14,10 @@ public class enemyFire extends GraphicsObject {
         super(x, y);
         this.xx = (int) x;
         this.yy = (int) y;
-        this.width = 10;
-        this.height = 10;
+        this.width = 5;
+        this.height = 15;
         this.e_fire_color = new Color(250, 0, 50);
-        this.speed_y = 3;
+        this.speed_y = 4;
     }
 
     public void draw(Graphics g) {
