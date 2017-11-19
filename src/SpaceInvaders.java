@@ -39,6 +39,8 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
     private ArrayList<enemyFire> enemyFireList;
     private ArrayList<playerFire> playerFireList;
 
+    //Font tr = new Font("TimesRoman", Font.PLAIN, 18);
+
     //HashMap<KeyEvent, Boolean> keyMap;
 
     /* Constructor for a Space Invaders game
@@ -65,7 +67,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
         int displacement = 60;
         for (int column = 0; column < 5; column++) {
             for (int row = 0; row < 3; row++) {
-                this.aliensList.add(new Aliens(100 + (column*displacement), 10 + (row*displacement)));
+                this.aliensList.add(new Aliens(10 + (column*displacement), 10 + (row*displacement)));
 
             }
         }
@@ -184,50 +186,32 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             if (this.steveBuscemi.x > 9) {
-                this.steveBuscemi.x -= 10;
+                this.steveBuscemi.x -= 15;
             }
 
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             if (this.steveBuscemi.x + this.steveBuscemi.width < 591) {
-                this.steveBuscemi.x += 10;
+                this.steveBuscemi.x += 15;
             }
         }
 
-       // keyMap.put(e, true);
-
 
     }
 
-    /*public boolean isKeyPressed(KeyEvent e){
-        if (keyMap.containsKey(e)){
-            return keyMap.get(e);
-        }
-        else{
-            keyMap.put(e, false);
-            return false;
-        }
-    }
 
-    /* Update the game objects
-     */
 
     private void update() {
-     /*
 
-        if (isKeyPressed(KeyEvent.VK_LEFT)){
-            System.out.println("left is pressed");
-        }
-        */
-
+        //stop updating if the game is over
         if (hasLostGame() || hasWonGame()) {
             return;
         }
 
         this.steveBuscemi.update(canvasWidth, canvasHeight, this.frame);
 
+        //destroy aliens if you hit them, and send playerfire offscreen when it hits
         for (int l = 0; l < playerFireList.size(); l++) {
             for (int m = 0; m < aliensList.size(); m++) {
-
 
                 if (this.playerFireList.get(l).yy >= this.aliensList.get(m).y
                         && this.playerFireList.get(l).yy <= this.aliensList.get(m).y + this.aliensList.get(m).size) {
@@ -240,7 +224,15 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
                 }
             }
         }
+        //---------------------------------------------------------------------
+        //if you take too long to destroy the aliens, new aliens start spawning.
+        if (frame > 350  && frame % 80 == 0) {
 
+            this.aliensList.add(new Aliens(10, 10));
+        }
+
+
+        //---------------------------------------------------------------------
         //remove player projectiles when they go offscreen
         for (int r = 0; r < playerFireList.size(); r++) {
 
@@ -303,7 +295,7 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
 
         }
-    //}
+
 
 
 
@@ -312,6 +304,8 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
      * @returns  true if the player has lost, false otherwise
      */
     private boolean hasLostGame() {
+
+        //if any of the enemy's projectiles hit you, you lose
         for (int f = 0; f < enemyFireList.size(); f++){
             if (enemyFireList.get(f).yy + enemyFireList.get(f).height >= this.steveBuscemi.y
                     && enemyFireList.get(f).yy <= this.steveBuscemi.y + this.steveBuscemi.height){
@@ -324,11 +318,17 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
 
 
         }
+
+        //---------------------------------------------------------------------
+        //if the aliens get past you, you lose
         for (int f = 0; f< aliensList.size(); f++){
             if (aliensList.get(f).y + aliensList.get(f).size >= this.canvasHeight){
                 return true;
             }
         }
+
+        //---------------------------------------------------------------------
+        //if any alien touches you, you lose
 
         for (int f = 0; f < aliensList.size(); f++){
             if (aliensList.get(f).y + aliensList.get(f).size >= this.steveBuscemi.y
@@ -389,8 +389,6 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
             g.fillRect(0,0,canvasWidth, canvasHeight);
             g.setColor(Color.BLACK);
 
-            //change to fillRect
-
             g.fillRect(100, 20, 20, 80);
             g.fillRect(120, 100, 20, 80);
             g.fillRect(140, 20, 20, 80);
@@ -423,9 +421,11 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
             //!
             g.fillRect(465, 210, 30, 120);
             g.fillRect(465, 360, 30, 30);
-            //oh boy
 
-            // FIXME draw the win screen here
+            //g.setColor(new Color(0,200,200));
+            //g.setFont(tr);
+            //g.drawString("congration you done it", 430, 350);
+
         }
 
     }
@@ -476,14 +476,10 @@ public class SpaceInvaders extends JPanel implements ActionListener, KeyListener
             g.fillRect(440, 225, 25, 150);
             g.fillRect(465, 350, 85, 25);
             g.setColor(new Color(250, 100, 150));
-            //int x_value = 0;
-            //int y_value = 0;
-            //for (int i = 0; i < 100; i++) {
-                g.drawString("You disappoint me greatly", 400, 200);
 
-           //}
+            //g.setFont(tr);
+            g.drawString("You disappoint me greatly", 400, 390);
 
-            // FIXME draw the game over screen here
 
         }
 
